@@ -1,5 +1,6 @@
 package com.example.TestProiectBackend.Service;
 
+import com.example.TestProiectBackend.Model.Breakfast;
 import com.example.TestProiectBackend.Model.Dinner;
 import org.springframework.stereotype.Component;
 
@@ -12,5 +13,6 @@ public interface DinnerService {
     Dinner findFirstByCaloriesIsGreaterThan(Integer calories);
     public Dinner findFirstByName(String name);
     //List<Aliment> findAllByHigh(String high);
+    public String Save(Dinner dinner);
 
 }

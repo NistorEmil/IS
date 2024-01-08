@@ -1,0 +1,22 @@
+Fitness Tracker
+
+Proiectul este realizat de Nistor Cristian-Emil si Poponet Tiberiu.
+Clientul isi va introduce date personale precum greutate, inaltime, varsta, obiectivul clientului etc, iar in functie de aceste
+date aplicatia poate oferi diferite functionalitati. In primul rand poate calcula caloriile pe care ar trebui sa le consume intr-o zi,
+poate sa ii ofere diferite mese (mic dejun, pranz, cina, gustare) care sa respecte numarul de calorii precum si obiectivul lui. De 
+asemenea poate sa ii ofere un plan de antrenament cu diverse exercitii in functie de cat de mult se antreneaza pe saptamana.
+Nu in ultimul rand acesta poate sa adauge propriile alimente, mese, exercitii si antrenamente precum si sa vada alimentele adaugate.
+
+Back End-ul a fost realizat de Emil.
+Pentru acesta am folosit limbajul Java, SQL si framework-ul Spring Boot.
+Diagrama use case a fost facuta de Emil.
+In aceasta am doar relatii intre cazurile de utilizare si actor si relatii de generalizare care sunt marcate prin sageata.
+Pentru a introduce un antrenament sau o masa clientul trebuie sa completeze numele exercitiilor sau alimentelor precum si numele
+atrenamentului/mesei.
+Ca si design Pattern-uri am implementat MVC(Model-View-Controller) implementat de Emil si Factory Method implementat de Tibi.
+
+Diagrama de stari a fost realizata de Tibi. Diagrama secventiala a fost realizata de Emil. Acestea arata procesul dintre persoana, care
+trimite niste informatii si raspunsul ca 2 tipuri de planuri: alimentar si de antrenament.
+Front-End-ul este realizat de Tibi. 
+Pentru acesta am folosit Html, CSS, TypeScript si framework-ul React.
+

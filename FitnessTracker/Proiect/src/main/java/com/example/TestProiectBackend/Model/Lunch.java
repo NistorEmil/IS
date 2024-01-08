@@ -2,15 +2,12 @@ package com.example.TestProiectBackend.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
-import java.util.Map;
 
 
 @Entity
@@ -29,6 +26,7 @@ public class Lunch implements Meal{
     @JsonIgnore
     private List<Aliment> aliments;
     private Integer calories;
+    private String day;
 
     public void setAliments(List<Aliment> aliments) {
         this.aliments = aliments;
@@ -41,4 +39,13 @@ public class Lunch implements Meal{
                 ", calories=" + calories +
                 '}';
     }
+
+    public Lunch(String name, List<Aliment> aliments, Integer calories) {
+        this.name = name;
+        this.aliments = aliments;
+        this.calories = calories;
+    }
+
+    @OneToMany
+    private List<CosPersonMasa> cosuri;
 }

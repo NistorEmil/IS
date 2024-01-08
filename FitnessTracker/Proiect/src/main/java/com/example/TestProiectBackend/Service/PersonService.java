@@ -10,7 +10,11 @@ public interface PersonService {
 
     Person findFirstById(Integer id);
 
-    void Insert(Person person);
+    String Insert(Person person);
+    Person findFirstByName(String name);
+    public String Save(Person person);
+    public String Delete(Person person);
+    public List<Person> getAllPersons();
     /*
     Person ReadById(Integer id);
 

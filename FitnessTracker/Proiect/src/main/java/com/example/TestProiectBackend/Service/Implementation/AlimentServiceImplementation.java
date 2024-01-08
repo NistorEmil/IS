@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Service.Implementation;
 
 import com.example.TestProiectBackend.Model.Aliment;
+import com.example.TestProiectBackend.Model.Person;
 import com.example.TestProiectBackend.Model.Workout;
 import com.example.TestProiectBackend.Repository.AlimentRepository;
 import com.example.TestProiectBackend.Service.AlimentService;
@@ -24,9 +25,41 @@ public class AlimentServiceImplementation implements AlimentService {
     }
 
     @Override
-    public void Insert(Aliment aliment) {
-        alimentRepository.save(aliment);
+    public String Insert(Aliment aliment) {
+        if(aliment.getName().isEmpty() || aliment.getCaloriesPer100g() == null || aliment.getProtein() == null || aliment.getFat() == null || aliment.getCarbs() == null || aliment.getFibre() == null){
+            return ("All fields are required");
+        }
+        else
+        {
+            alimentRepository.save(aliment);
+            System.out.println(aliment);
+            return ("Aliment added succesfully");
+        }
     }
+
+    @Override
+    public String Delete(Aliment aliment){
+        if(aliment.getName().isEmpty()) {
+            return ("Aliment needed to be deleted");
+        }
+        else{
+            alimentRepository.delete(aliment);
+            return ("Aliment deleted succesfully");
+        }
+    }
+
+    @Override
+    public String DeleteByName(String alimentName)
+    {
+        if(alimentName.isEmpty()) {
+            return ("Aliment needed to be deleted");
+        }
+        else{
+            alimentRepository.deleteByName(alimentName);
+            return ("Aliment deleted succesfully");
+        }
+    }
+
     @Override
     public Aliment findFirstByName(String name)
     {
@@ -79,6 +112,19 @@ public class AlimentServiceImplementation implements AlimentService {
     {
         List<Aliment> aliments = alimentRepository.findAllByLow(low);
         return aliments;
+    }
+
+    @Override
+    public String Save(Aliment aliment) {
+        if(aliment.getName().isEmpty()){
+            //System.out.println("Date insuficiente");
+            return ("Name and price fields are required / Select a product");
+        }
+        else{
+            alimentRepository.save(aliment);
+            return ("Infos updated succesfully");
+            //System.out.println(employee);
+        }
     }
 
     public List<Aliment> alimentsToEat(String ojective)

@@ -2,6 +2,7 @@ package com.example.TestProiectBackend.Controller;
 
 import com.example.TestProiectBackend.DTO.WorkoutAux;
 import com.example.TestProiectBackend.Model.Exercise;
+import com.example.TestProiectBackend.Model.Person;
 import com.example.TestProiectBackend.Model.Workout;
 import com.example.TestProiectBackend.Service.Implementation.ExerciseServiceImplementation;
 import com.example.TestProiectBackend.Service.Implementation.WorkoutServiceImplementation;
@@ -25,7 +26,7 @@ public class WorkoutController {
     private final ExerciseServiceImplementation exerciseServiceImplementation;
 
     @PostMapping("/Insert")
-    public void insert(@RequestBody WorkoutAux workoutAux){
+    public ResponseEntity<Object> insert(@RequestBody WorkoutAux workoutAux){
         Workout workout = new Workout();
         workout.setWorkoutDuration(workoutAux.getWorkoutDuration());
         workout.setName(workoutAux.getName());
@@ -35,8 +36,26 @@ public class WorkoutController {
             exercises.add(exerciseServiceImplementation.findFirstByName(exerciseName));
         }
         workout.setExercises(exercises);
-        workoutServiceImplementation.Insert(workout);
+
+        String string = workoutServiceImplementation.Insert(workout);
+        if(string.equals("Workout added succesfully")){
+            return ResponseEntity.ok(string);
+        }
+        else {
+            return ResponseEntity.badRequest().body(string);
+        }
+    }
+
+    @PostMapping("/Delete")
+    public ResponseEntity<Object> delete(@RequestBody Workout workout){
         System.out.println(workout);
+        String string = workoutServiceImplementation.Delete(workout);
+        if(string.equals("Workout deleted succesfully")){
+            return ResponseEntity.ok(string);
+        }
+        else {
+            return ResponseEntity.badRequest().body(string);
+        }
     }
 
     @PostMapping("/GetByName")

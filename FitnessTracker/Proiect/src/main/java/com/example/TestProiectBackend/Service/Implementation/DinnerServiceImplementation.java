@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Service.Implementation;
 
 import com.example.TestProiectBackend.Model.Aliment;
+import com.example.TestProiectBackend.Model.Breakfast;
 import com.example.TestProiectBackend.Model.Dinner;
 import com.example.TestProiectBackend.Model.Workout;
 import com.example.TestProiectBackend.Repository.DinnerRepository;
@@ -45,4 +46,15 @@ public class DinnerServiceImplementation implements DinnerService {
         return null;
     }
      */
+    public String Save(Dinner dinner) {
+        if(dinner.getName().isEmpty()){
+            //System.out.println("Date insuficiente");
+            return ("Name and price fields are required / Select a product");
+        }
+        else{
+            dinnerRepository.save(dinner);
+            return ("Infos updated succesfully");
+            //System.out.println(employee);
+        }
+    }
 }

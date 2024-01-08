@@ -18,8 +18,16 @@ public class BreakfastServiceImplementation implements BreakfastService {
 
 
     @Override
-    public void Insert(Breakfast breakfast) {
-        breakfastRepository.save(breakfast);
+    public String Insert(Breakfast breakfast) {
+
+        if(breakfast.getName().isEmpty() || breakfast.getAliments().isEmpty()){
+            return ("All fields are required");
+        }
+        else {
+            breakfastRepository.save(breakfast);
+            System.out.println(breakfast);
+            return ("Breakfast added succesfully");
+        }
     }
 
     @Override
@@ -38,6 +46,17 @@ public class BreakfastServiceImplementation implements BreakfastService {
         return breakfastRepository.findFirstByCaloriesIsGreaterThan(calories);
     }
 
+    public String Save(Breakfast breakfast) {
+        if(breakfast.getName().isEmpty()){
+            //System.out.println("Date insuficiente");
+            return ("Name and price fields are required / Select a product");
+        }
+        else{
+            breakfastRepository.save(breakfast);
+            return ("Infos updated succesfully");
+            //System.out.println(employee);
+        }
+    }
 
     /*
     @Override

@@ -23,11 +23,10 @@ public class Exercise {
     private String name;
     private String type; // muscleGrow or cardio or warmup
     private String muscleTargeted;
-    private Integer duration;
     private Integer repsPerSet;
     private Integer numberOfSets;
-
     @ManyToMany(mappedBy = "exercises")
     @JsonManagedReference
+    //@JsonIgnore
     private List<Workout> workouts;
 }

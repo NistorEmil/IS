@@ -23,6 +23,7 @@ public interface AlimentRepository extends CrudRepository<Aliment, Integer> {
     public List<Aliment> findAllByHigh(String high);
 
     public List<Aliment> findAllByLow(String low);
+    public void deleteByName(String alimentName);
 
     // in repouri pun doar cele care nu sunt default
     // save, update(aceeasi chestie cu update), delete, find all sunt default

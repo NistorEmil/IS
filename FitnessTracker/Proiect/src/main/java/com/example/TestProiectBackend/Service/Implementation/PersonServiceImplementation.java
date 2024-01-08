@@ -26,9 +26,58 @@ public class PersonServiceImplementation implements PersonService {
     }
 
     @Override
-    public void Insert(Person person) {
-        personRepository.save(person);
+    public String Insert(Person person) {
+        if(person.getGender().isEmpty() || person.getName().isEmpty() || person.getAge() == null || person.getWeight() == null || person.getHeight() == null || person.getNumberOfTrainingDays() == null || person.getActiveMetabolicRate() == null || person.getObjective().isEmpty()){
+            return ("All fields are required");
+        }
+        else
+        {
+            personRepository.save(person);
+            System.out.println(person);
+            return ("Person added succesfully");
+        }
     }
+
+    @Override
+    public List<Person> getAllPersons() {
+        return (List<Person>) personRepository.findAll();
+    }
+
+    @Override
+    public Person findFirstByName(String name) {
+        return personRepository.findFirstByName(name);
+    }
+
+    @Override
+    public String Delete(Person person){
+        if(person.getName().isEmpty()) {
+            return ("Person needed to be deleted");
+        }
+        else{
+            personRepository.delete(person);
+            return ("Person deleted succesfully");
+        }
+    }
+
+    public String Save(Person person) {
+        System.out.println(person.getId());
+        System.out.println(person.getAge());
+        System.out.println(person.getName());
+        if(person.getGender().isEmpty() || person.getName().isEmpty() || person.getAge() == null ||  person.getWeight() == null || person.getHeight() == null ||  person.getNumberOfTrainingDays() == null || person.getActiveMetabolicRate().isEmpty() || person.getObjective().isEmpty()){
+            //System.out.println("Date insuficiente");
+            return ("All fields are required / Select a person");
+        }
+        else{
+            personRepository.save(person);
+            return ("Infos updated succesfully");
+            //System.out.println(employee);
+        }
+    }
+
+
+
+
+
  /*
     @Override
     public Person ReadById(Integer id) {

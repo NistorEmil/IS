@@ -8,10 +8,11 @@ import java.util.List;
 
 @Component
 public interface BreakfastService {
-    public void Insert(Breakfast breakfast);
+    String Insert(Breakfast breakfast);
     Breakfast findFirstByCaloriesIsLessThan(Integer calories);
     Breakfast findFirstByCaloriesIsGreaterThan(Integer calories);
     public Breakfast findFirstByName(String name);
+    public String Save(Breakfast breakfast);
     //List<Aliment> findAllByHigh(String high);
 
 }

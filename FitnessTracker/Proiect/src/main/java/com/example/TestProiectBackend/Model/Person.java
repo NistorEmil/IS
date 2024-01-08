@@ -1,12 +1,9 @@
 package com.example.TestProiectBackend.Model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,6 +23,7 @@ public class Person {
     private Integer numberOfTrainingDays;
     private String activeMetabolicRate;
     private String objective;
+    /*
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinTable(
@@ -34,6 +32,8 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "breakfast_id"))
     @JsonIgnore
     private List<Breakfast> breakfastList = new ArrayList<>(7);
+
+     */
 
     @Override
     public String toString() {
@@ -47,7 +47,11 @@ public class Person {
                 ", numberOfTrainingDays=" + numberOfTrainingDays +
                 ", activeMetabolicRate='" + activeMetabolicRate + '\'' +
                 ", objective='" + objective + '\'' +
-                ", breakfastList=" + breakfastList +
                 '}';
     }
+
+    @OneToMany
+    private List<CosPersonMasa> cosuri;
+    @OneToMany
+    private List<CosPersonWorkout> cosPersonWorkouts;
 }

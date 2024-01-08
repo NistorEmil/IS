@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Service;
 
 import com.example.TestProiectBackend.Model.Aliment;
+import com.example.TestProiectBackend.Model.Breakfast;
 import com.example.TestProiectBackend.Model.Workout;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,11 @@ public interface AlimentService {
     Aliment findFirstByName(String name);
     List<Aliment> findAllByIdGreaterThanEqual(Integer id);
 
-    public void Insert(Aliment aliment);
+    public String Insert(Aliment aliment);
 
     public Aliment ReadById(Integer id);
+    public String Delete(Aliment aliment);
+    public String DeleteByName(String alimentName);
 
     /*
     List<Aliment> findAllByCalories();
@@ -28,4 +31,5 @@ public interface AlimentService {
     List<Aliment> findAllByHigh(String high);
 
     List<Aliment> findAllByLow(String low);
+    public String Save(Aliment aliment);
 }

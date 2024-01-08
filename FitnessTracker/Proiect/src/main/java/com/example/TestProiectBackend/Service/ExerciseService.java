@@ -8,7 +8,8 @@ public interface ExerciseService {
     Exercise findFirstById(Integer id);
     Exercise findFirstByName(String name);
 
-    public void Insert(Exercise exercise);
+    public String Insert(Exercise exercise);
 
     public Exercise ReadByName(String name);
+    public String Delete(Exercise exercise);
 }

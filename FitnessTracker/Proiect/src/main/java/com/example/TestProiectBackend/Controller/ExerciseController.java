@@ -1,6 +1,7 @@
 package com.example.TestProiectBackend.Controller;
 
 import com.example.TestProiectBackend.Model.Exercise;
+import com.example.TestProiectBackend.Model.Person;
 import com.example.TestProiectBackend.Service.Implementation.ExerciseServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,26 @@ public class ExerciseController {
     private final ExerciseServiceImplementation exerciseServiceImplementation;
 
     @PostMapping("/Insert")
-    public void insert(@RequestBody Exercise exercise) {
-        Exercise existingExercise = exerciseServiceImplementation.findFirstByName(exercise.getName());
-        if (existingExercise == null) {
-            exerciseServiceImplementation.Insert(exercise);
-            System.out.println(exercise);
-        } else {
-            System.out.println("Exercițiul cu numele dat deja există în baza de date.");
+    public ResponseEntity<Object> Insert(@RequestBody Exercise exercise)
+    {
+        String string = exerciseServiceImplementation.Insert(exercise);
+        if(string.equals("Exercise added succesfully")){
+            return ResponseEntity.ok(string);
+        }
+        else {
+            return ResponseEntity.badRequest().body(string);
+        }
+    }
+
+    @PostMapping("/Delete")
+    public ResponseEntity<Object> delete(@RequestBody Exercise exercise){
+        System.out.println(exercise);
+        String string = exerciseServiceImplementation.Delete(exercise);
+        if(string.equals("Exercise deleted succesfully")){
+            return ResponseEntity.ok(string);
+        }
+        else {
+            return ResponseEntity.badRequest().body(string);
         }
     }
 

@@ -28,5 +28,6 @@ public class Aliment {
     @ManyToMany(mappedBy = "aliments")
     @JsonIgnore
     private List<Breakfast> breakfasts;
-    private Integer gramaj;
+    @OneToMany
+    private List<CosAlimentGramaj> cosuri;
 }

@@ -29,13 +29,27 @@ public class ExerciseServiceImplementation implements ExerciseService {
     }
 
     @Override
-    public void Insert(Exercise exercise) {
-        exerciseRepository.save(exercise);
+    public String Insert(Exercise exercise) {
+        if (exercise.getName().isEmpty() || exercise.getType().isEmpty() || exercise.getMuscleTargeted().isEmpty() || exercise.getRepsPerSet() == null || exercise.getNumberOfSets() == null) {
+            return "All fields are required for exercise";
+        } else {
+            exerciseRepository.save(exercise);
+            return "Exercise added successfully";
+        }
     }
 
     @Override
     public Exercise ReadByName(String name) {
         Exercise exercise = exerciseRepository.findFirstByName(name);
         return exercise;
+    }
+    @Override
+    public String Delete(Exercise exercise) {
+        if (exercise.getName().isEmpty()) {
+            return "Exercise name needed to be deleted";
+        } else {
+            exerciseRepository.delete(exercise);
+            return "Exercise deleted successfully";
+        }
     }
 }

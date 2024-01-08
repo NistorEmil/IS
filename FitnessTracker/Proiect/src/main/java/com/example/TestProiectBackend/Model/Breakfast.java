@@ -3,16 +3,12 @@ package com.example.TestProiectBackend.Model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Entity
@@ -52,9 +48,15 @@ public class Breakfast implements Meal{
     }
 
     private String day;
+    /*
     @ManyToMany(mappedBy = "breakfastList")
     @JsonIgnore
     private List<Person> personList = new ArrayList<>();
+
+
+     */
+    @OneToMany
+    private List<CosPersonMasa> cosuri;
 
 
 }

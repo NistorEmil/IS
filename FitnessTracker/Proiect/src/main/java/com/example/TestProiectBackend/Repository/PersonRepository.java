@@ -10,7 +10,7 @@ import java.util.List;
 public interface PersonRepository extends CrudRepository<Person, Integer> {
 
     Person findFirstById(Integer id);
-
+    Person findFirstByName(String name);
     /*
     Person ReadById(Integer id);
 */
