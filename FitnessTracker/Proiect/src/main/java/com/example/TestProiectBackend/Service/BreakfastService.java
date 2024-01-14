@@ -13,6 +13,8 @@ public interface BreakfastService {
     Breakfast findFirstByCaloriesIsGreaterThan(Integer calories);
     public Breakfast findFirstByName(String name);
     public String Save(Breakfast breakfast);
+    public String Delete(Breakfast breakfast);
+    Breakfast findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2);
     //List<Aliment> findAllByHigh(String high);
 
 }

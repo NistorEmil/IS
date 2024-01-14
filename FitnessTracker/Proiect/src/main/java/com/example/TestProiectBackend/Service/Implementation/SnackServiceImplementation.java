@@ -1,8 +1,6 @@
 package com.example.TestProiectBackend.Service.Implementation;
 
-import com.example.TestProiectBackend.Model.Aliment;
-import com.example.TestProiectBackend.Model.Snack;
-import com.example.TestProiectBackend.Model.Workout;
+import com.example.TestProiectBackend.Model.*;
 import com.example.TestProiectBackend.Repository.SnackRepository;
 import com.example.TestProiectBackend.Service.SnackService;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +36,39 @@ public class SnackServiceImplementation implements SnackService {
         return snackRepository.findFirstByCaloriesIsGreaterThan(calories);
     }
 
+    @Override
+    public String Delete(Snack snack)
+    {
+        if(snack.getName().isEmpty()) {
+            return ("Snack needed to be deleted");
+        }
+        else{
+            snackRepository.delete(snack);
+            return ("Snack deleted succesfully");
+        }
+    }
 
+    @Override
+    public String Save(Snack snack) {
+        if(snack.getName().isEmpty()){
+            //System.out.println("Date insuficiente");
+            return ("Name and price fields are required / Select a product");
+        }
+        else{
+            snackRepository.save(snack);
+            return ("Infos updated succesfully");
+            //System.out.println(employee);
+        }
+    }
     /*
     @Override
     public List<Aliment> findAllByHigh(String high) {
         return null;
     }
      */
+    @Override
+    public Snack findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2)
+    {
+        return snackRepository.findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(calories1, calories2);
+    }
 }

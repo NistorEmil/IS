@@ -15,5 +15,7 @@ public interface LunchService {
     public Lunch findFirstByName(String name);
     //List<Aliment> findAllByHigh(String high);
     public String Save(Lunch lunch);
+    public String Delete(Lunch lunch);
+    Lunch findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2);
 
 }

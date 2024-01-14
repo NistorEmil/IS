@@ -2,6 +2,7 @@ package com.example.TestProiectBackend.Service.Implementation;
 
 import com.example.TestProiectBackend.Model.Aliment;
 import com.example.TestProiectBackend.Model.Breakfast;
+import com.example.TestProiectBackend.Model.Dinner;
 import com.example.TestProiectBackend.Model.Workout;
 import com.example.TestProiectBackend.Repository.BreakfastRepository;
 import com.example.TestProiectBackend.Service.BreakfastService;
@@ -46,6 +47,12 @@ public class BreakfastServiceImplementation implements BreakfastService {
         return breakfastRepository.findFirstByCaloriesIsGreaterThan(calories);
     }
 
+    @Override
+    public Breakfast findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2)
+    {
+        return breakfastRepository.findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(calories1, calories2);
+    }
+    @Override
     public String Save(Breakfast breakfast) {
         if(breakfast.getName().isEmpty()){
             //System.out.println("Date insuficiente");
@@ -55,6 +62,18 @@ public class BreakfastServiceImplementation implements BreakfastService {
             breakfastRepository.save(breakfast);
             return ("Infos updated succesfully");
             //System.out.println(employee);
+        }
+    }
+
+    @Override
+    public String Delete(Breakfast breakfast)
+    {
+        if(breakfast.getName().isEmpty()) {
+            return ("Breakfast needed to be deleted");
+        }
+        else{
+            breakfastRepository.delete(breakfast);
+            return ("Breakfast deleted succesfully");
         }
     }
 

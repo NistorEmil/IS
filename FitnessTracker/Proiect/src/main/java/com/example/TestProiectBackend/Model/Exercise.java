@@ -26,7 +26,7 @@ public class Exercise {
     private Integer repsPerSet;
     private Integer numberOfSets;
     @ManyToMany(mappedBy = "exercises")
-    @JsonManagedReference
-    //@JsonIgnore
+    //@JsonManagedReference
+    @JsonIgnore
     private List<Workout> workouts;
 }

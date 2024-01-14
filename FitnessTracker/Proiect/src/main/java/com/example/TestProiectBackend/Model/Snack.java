@@ -34,11 +34,20 @@ public class Snack implements Meal{
         this.aliments = aliments;
     }
 
+    private String day;
     @Override
     public String toString() {
         return "Snack{" +
                 "name='" + name + '\'' +
                 ", calories=" + calories +
                 '}';
+    }
+    @OneToMany
+    private List<CosPersonMasa> cosuri;
+
+    public Snack(String name, List<Aliment> aliments, Integer calories) {
+        this.name = name;
+        this.aliments = aliments;
+        this.calories = calories;
     }
 }

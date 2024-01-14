@@ -7,6 +7,11 @@
   background-size: cover;
   background-position: center;
   z-index: 1;
+
+}
+
+.App input {
+  color: white;
 }
 
 /*.App-logo {*/
@@ -48,8 +53,9 @@
 header {
   background-color: #2196f3;
   color: white;
-  padding: 20px;
+  padding: 21px;
   text-align: center;
+
 }
 
 /*header h1 {*/
@@ -70,4 +76,9 @@ footer {
   bottom: 0;
   width: 100%;
   text-align: center;
+}
+
+.InsertButton {
+  position: fixed;
+  bottom: 50px;
 }

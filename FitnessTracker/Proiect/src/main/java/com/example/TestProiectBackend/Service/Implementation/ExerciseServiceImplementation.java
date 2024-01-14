@@ -52,4 +52,9 @@ public class ExerciseServiceImplementation implements ExerciseService {
             return "Exercise deleted successfully";
         }
     }
+    @Override
+    public List<Exercise> findAllByIdGreaterThanEqual(Integer id)
+    {
+        return exerciseRepository.findAllByIdGreaterThanEqual(id);
+    }
 }

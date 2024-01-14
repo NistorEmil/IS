@@ -17,11 +17,13 @@ public class CosPersonMasa {
     private String breakfastId;
     private String lunchId;
     private String dinnerId;
+    private String snackId;
 
-    public CosPersonMasa(Integer personId, String breakfastId, String lunchId, String dinnerId) {
+    public CosPersonMasa(Integer personId, String breakfastId, String lunchId, String dinnerId, String snackId) {
         this.personId = personId;
         this.breakfastId = breakfastId;
         this.lunchId = lunchId;
         this.dinnerId = dinnerId;
+        this.snackId = snackId;
     }
 }

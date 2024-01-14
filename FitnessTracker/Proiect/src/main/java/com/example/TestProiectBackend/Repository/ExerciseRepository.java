@@ -13,4 +13,6 @@ public interface ExerciseRepository extends CrudRepository<Exercise, Integer> {
     List<Exercise> findAllByName(String nume);
     List<Exercise> findAllByNameAfter(String name);
 
+
+    List<Exercise> findAllByIdGreaterThanEqual(Integer id);
 }

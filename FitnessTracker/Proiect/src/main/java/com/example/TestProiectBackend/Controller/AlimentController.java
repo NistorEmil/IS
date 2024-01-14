@@ -61,13 +61,17 @@ public class AlimentController {
         //HttpStatus.BAD_REQUEST pt erori
     }
 
-    @PostMapping("/findAll")
-    public void find(){
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Aliment>> find(){
         List<Aliment> aliments = alimentServiceImplementation.findAllByIdGreaterThanEqual(0);
         for(Aliment aliment:aliments)
         {
             System.out.println(aliment);
         }
+        if(aliments != null)
+            return ResponseEntity.status(HttpStatus.OK).body(aliments);
+        else
+            return ResponseEntity.badRequest().body(null);
     }
 
 }

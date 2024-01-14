@@ -1,9 +1,6 @@
 package com.example.TestProiectBackend.Service.Implementation;
 
-import com.example.TestProiectBackend.Model.Aliment;
-import com.example.TestProiectBackend.Model.Breakfast;
-import com.example.TestProiectBackend.Model.Lunch;
-import com.example.TestProiectBackend.Model.Workout;
+import com.example.TestProiectBackend.Model.*;
 import com.example.TestProiectBackend.Repository.LunchRepository;
 import com.example.TestProiectBackend.Service.LunchService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +43,7 @@ public class LunchServiceImplementation implements LunchService {
         return null;
     }
      */
+    @Override
     public String Save(Lunch lunch) {
         if(lunch.getName().isEmpty()){
             //System.out.println("Date insuficiente");
@@ -56,5 +54,23 @@ public class LunchServiceImplementation implements LunchService {
             return ("Infos updated succesfully");
             //System.out.println(employee);
         }
+    }
+
+    @Override
+    public String Delete(Lunch lunch)
+    {
+        if(lunch.getName().isEmpty()) {
+            return ("Lunch needed to be deleted");
+        }
+        else{
+            lunchRepository.delete(lunch);
+            return ("Lunch deleted succesfully");
+        }
+    }
+
+    @Override
+    public Lunch findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2)
+    {
+        return lunchRepository.findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(calories1, calories2);
     }
 }

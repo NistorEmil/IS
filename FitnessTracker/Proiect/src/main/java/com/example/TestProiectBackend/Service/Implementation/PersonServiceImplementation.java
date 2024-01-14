@@ -75,8 +75,11 @@ public class PersonServiceImplementation implements PersonService {
     }
 
 
-
-
+    @Override
+    public List<Person> findAllByIdGreaterThanEqual(Integer id)
+    {
+        return personRepository.findAllByIdGreaterThanEqual(id);
+    }
 
  /*
     @Override

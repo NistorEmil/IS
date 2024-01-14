@@ -21,5 +21,6 @@ public interface PersonService {
 
      */
     Double computeCalories(Person person);
+    List<Person> findAllByIdGreaterThanEqual(Integer id);
 
 }

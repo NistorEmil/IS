@@ -13,6 +13,7 @@ import java.util.List;
 public interface BreakfastRepository extends CrudRepository<Breakfast, Integer> {
     Breakfast findFirstByCaloriesIsLessThan(Integer calories);
     Breakfast findFirstByCaloriesIsGreaterThan(Integer calories);
+    Breakfast findFirstByCaloriesIsGreaterThanAndCaloriesIsLessThan(Integer calories1, Integer calories2);
     Breakfast findFirstByName(String name);
     //public List<Aliment> findAllByHigh(String high);
 }

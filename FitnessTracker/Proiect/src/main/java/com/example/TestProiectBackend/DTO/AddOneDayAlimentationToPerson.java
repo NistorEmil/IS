@@ -12,5 +12,6 @@ public class AddOneDayAlimentationToPerson {
     private String breakfastName;
     private String lunchName;
     private String dinnerName;
+    private String snackName;
     private String day;
 }
