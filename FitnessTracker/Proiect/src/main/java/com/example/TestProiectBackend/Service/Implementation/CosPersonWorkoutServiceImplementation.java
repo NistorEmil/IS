@@ -1,5 +1,6 @@
 package com.example.TestProiectBackend.Service.Implementation;
 
+import com.example.TestProiectBackend.Model.CosPersonMasa;
 import com.example.TestProiectBackend.Model.Workout;
 import com.example.TestProiectBackend.Model.CosPersonWorkout;
 import com.example.TestProiectBackend.Repository.CosPersonWorkoutRepository;
@@ -43,6 +44,25 @@ public class CosPersonWorkoutServiceImplementation implements CosPersonWorkoutSe
             workouts.add(workout);
         }
         return workouts;
+    }
+
+    @Override
+    public String deleteById(Integer id)
+    {
+        if(id == null) {
+            return ("Deleted failed");
+        }
+        else{
+            CosPersonWorkout cosPersonMasa = cosRepository.findFirstById(id);
+            if (cosPersonMasa != null) {
+                cosRepository.deleteById(id);
+                return ("Workout deleted succesfully");
+            }
+            else
+            {
+                return ("Workout nu exista");
+            }
+        }
     }
 
 }

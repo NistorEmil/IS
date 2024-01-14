@@ -3,7 +3,6 @@ package com.example.TestProiectBackend.Controller;
 import com.example.TestProiectBackend.DTO.AddOneDayAlimentationToPerson;
 import com.example.TestProiectBackend.DTO.AddWorkoutToPerson;
 import com.example.TestProiectBackend.DTO.BreakfastDTO;
-import com.example.TestProiectBackend.DTO.DeleteAlimentationRequest;
 import com.example.TestProiectBackend.Model.*;
 import com.example.TestProiectBackend.Service.Implementation.*;
 import lombok.RequiredArgsConstructor;
@@ -142,6 +141,15 @@ public class PersonController {
         }
     }
 
+    @PostMapping("/Alimentation")
+    public void alimentation(@RequestBody Person person)
+    {
+        breakfast(person);
+        lunch(person);
+        dinner(person);
+        snack(person);
+    }
+
     @PostMapping("/WorkoutPlan")
     public ResponseEntity<Object> workoutPlan(@RequestBody Person person)
     {
@@ -174,9 +182,9 @@ public class PersonController {
     }
 
     @PostMapping("/Calories")
-    public void calories(@RequestBody Person person)
+    public ResponseEntity<Double> calories(@RequestBody Person person)
     {
-        personServiceImplementation.computeCalories(person);
+        return ResponseEntity.badRequest().body(personServiceImplementation.computeCalories(person));
     }
 
     @PostMapping("/Results")
@@ -210,6 +218,20 @@ public class PersonController {
         }
     }
 
+    @GetMapping("/findAllMeals")
+    public ResponseEntity<List<CosPersonMasa>> findAllMeals(@RequestBody Person person){
+        Person person1 = personServiceImplementation.findFirstById(person.getId());
+        if(person1 == null)
+        {
+            System.out.println("Persoana nu a fost gasita");
+            return ResponseEntity.badRequest().body(null);
+        }
+        List<CosPersonMasa> cosuri = person1.getCosuri();
+        if(cosuri != null)
+            return ResponseEntity.status(HttpStatus.OK).body(cosuri);
+        else
+            return ResponseEntity.badRequest().body(null);
+    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Person>> find(){
@@ -319,50 +341,76 @@ public class PersonController {
         String snackName = addOneDayAlimentationToPerson.getSnackName();
 
         CosPersonMasa cos = new CosPersonMasa(addOneDayAlimentationToPerson.getPersonId(), addOneDayAlimentationToPerson.getBreakfastName(), addOneDayAlimentationToPerson.getLunchName(), addOneDayAlimentationToPerson.getDinnerName(), addOneDayAlimentationToPerson.getSnackName());
-        cosServiceImplementation.Insert(cos);
         Person person = personServiceImplementation.findFirstById(addOneDayAlimentationToPerson.getPersonId());
-        List<CosPersonMasa> cosuriPerson = person.getCosuri();
-        cosuriPerson.add(cos);
-        person.setCosuri(cosuriPerson);
-        personServiceImplementation.Save(person);
+        if(person == null)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Persoana nu a fost gasita");
+        }
+
+        if(breakfastName == null || dinnerName == null || lunchName == null || snackName == null || addOneDayAlimentationToPerson.getDay() == null)
+        {
+            return ResponseEntity.badRequest().body("Completeaza toate field-urile");
+        }
+        else
+        {
+            List<CosPersonMasa> cosuriPerson = person.getCosuri();
+            cosuriPerson.add(cos);
+            person.setCosuri(cosuriPerson);
+        }
 
         Breakfast breakfast = breakfastServiceImplementation.findFirstByName(breakfastName);
         Lunch lunch = lunchServiceImplementation.findFirstByName(lunchName);
         Dinner dinner = dinnerServiceImplementation.findFirstByName(dinnerName);
         Snack snack = snackServiceImplementation.findFirstByName(snackName);
-        breakfast.setDay(addOneDayAlimentationToPerson.getDay());
-        lunch.setDay(addOneDayAlimentationToPerson.getDay());
-        dinner.setDay(addOneDayAlimentationToPerson.getDay());
-        snack.setDay(addOneDayAlimentationToPerson.getDay());
-        List<CosPersonMasa> cosuriBreakfast = breakfast.getCosuri();
-        List<CosPersonMasa> cosuriLunch = lunch.getCosuri();
-        List<CosPersonMasa> cosuriDinner = dinner.getCosuri();
-        List<CosPersonMasa> cosuriSnack = snack.getCosuri();
-        cosuriBreakfast.add(cos);
-        cosuriLunch.add(cos);
-        cosuriDinner.add(cos);
-        cosuriSnack.add(cos);
-        breakfast.setCosuri(cosuriBreakfast);
-        lunch.setCosuri(cosuriLunch);
-        dinner.setCosuri(cosuriDinner);
-        snack.setCosuri(cosuriSnack);
 
-        breakfastServiceImplementation.Save(breakfast);
-        lunchServiceImplementation.Save(lunch);
-        dinnerServiceImplementation.Save(dinner);
-        snackServiceImplementation.Save(snack);
-        return ResponseEntity.ok("Alimentatia a fost adaugata cu succes");
+        if(breakfast == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Breakfast-ul nu a fost gasit");
+        else if(lunch == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lunch-ul nu a fost gasit");
+        else if(dinner == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dinner-ul nu a fost gasit");
+        else if(snack == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Snack-ul nu a fost gasit");
+
+        if(breakfast != null && lunch != null && dinner != null && snack != null && addOneDayAlimentationToPerson.getDay() != null) {
+            cosServiceImplementation.Insert(cos);
+            personServiceImplementation.Save(person);
+            breakfast.setDay(addOneDayAlimentationToPerson.getDay());
+            lunch.setDay(addOneDayAlimentationToPerson.getDay());
+            dinner.setDay(addOneDayAlimentationToPerson.getDay());
+            snack.setDay(addOneDayAlimentationToPerson.getDay());
+            List<CosPersonMasa> cosuriBreakfast = breakfast.getCosuri();
+            List<CosPersonMasa> cosuriLunch = lunch.getCosuri();
+            List<CosPersonMasa> cosuriDinner = dinner.getCosuri();
+            List<CosPersonMasa> cosuriSnack = snack.getCosuri();
+            cosuriBreakfast.add(cos);
+            cosuriLunch.add(cos);
+            cosuriDinner.add(cos);
+            cosuriSnack.add(cos);
+            breakfast.setCosuri(cosuriBreakfast);
+            lunch.setCosuri(cosuriLunch);
+            dinner.setCosuri(cosuriDinner);
+            snack.setCosuri(cosuriSnack);
+            breakfastServiceImplementation.Save(breakfast);
+            lunchServiceImplementation.Save(lunch);
+            dinnerServiceImplementation.Save(dinner);
+            snackServiceImplementation.Save(snack);
+            return ResponseEntity.ok("Alimentatia a fost adaugata cu succes");
+        }
+        else
+        {
+            return ResponseEntity.badRequest().body("Trebuie introduse mese valide");
+        }
     }
-
 
     @PostMapping("/UpdateWorkoutPerson")
     public ResponseEntity<Object> saveWorkout(@RequestBody AddWorkoutToPerson addWorkoutToPerson){
 
         String workoutName = addWorkoutToPerson.getWorkout().getName();
 
-        CosPersonWorkout cos = new CosPersonWorkout(addWorkoutToPerson.getPerson().getId(), workoutName);
+        CosPersonWorkout cos = new CosPersonWorkout(addWorkoutToPerson.getPersonId(), workoutName);
         cosPersonWorkoutServiceImplementation.Insert(cos);
-        Person person = personServiceImplementation.findFirstById(addWorkoutToPerson.getPerson().getId());
+        Person person = personServiceImplementation.findFirstById(addWorkoutToPerson.getPersonId());
         List<CosPersonWorkout> cosuriPerson = person.getCosPersonWorkouts();
         cosuriPerson.add(cos);
         person.setCosPersonWorkouts(cosuriPerson);
@@ -376,7 +424,68 @@ public class PersonController {
 
         workoutServiceImplementation.Save(workout);
         return ResponseEntity.ok("Antrenamentul a fost adaugat cu succes");
+    }
 
+    @PostMapping("/DeleteWorkoutPerson")
+    public ResponseEntity<Object> deleteWorkout(@RequestBody CosPersonWorkout cosPersonWorkout){
+        if(cosPersonWorkout.getWorkoutId() == null || cosPersonWorkout.getPersonId() == null || cosPersonWorkout.getId() == null)
+            return ResponseEntity.badRequest().body("Completeaza toate fied-urile");
+        Workout workout = workoutServiceImplementation.findFirstByName(cosPersonWorkout.getWorkoutId());
+        Person person = personServiceImplementation.findFirstById(cosPersonWorkout.getPersonId());
+        if(workout == null || person == null)
+        {
+            if(workout == null)
+                return ResponseEntity.badRequest().body("Workout-ul nu a fost gasit");
+            else if(person == null)
+                return ResponseEntity.badRequest().body("Persoana nu a fost gasita");
+        }
+        else
+        {
+            workout.setDay(null);
+            List<CosPersonWorkout> cosuri = workout.getCosPersonWorkouts();
+            CosPersonWorkout deletedCos = null;
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Workout nu are cosuri");
+            }
+            else
+            {
+                for(CosPersonWorkout cos: cosuri) {
+                    if (cos.getId().equals(cosPersonWorkout.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if(deletedCos != null)
+                    cosuri.remove(deletedCos);
+                workout.setCosPersonWorkouts(cosuri);
+                workoutServiceImplementation.Save(workout);
+
+                cosuri = person.getCosPersonWorkouts();
+                deletedCos = null;
+                if(cosuri == null)
+                {
+                    return ResponseEntity.badRequest().body("Persoana nu are cosuri");
+                }
+                else {
+                    for (CosPersonWorkout cos : cosuri) {
+                        if (cos.getId().equals(cosPersonWorkout.getId())) {
+                            deletedCos = cos;
+                        }
+                    }
+                    if (deletedCos != null)
+                        cosuri.remove(deletedCos);
+                    person.setCosPersonWorkouts(cosuri);
+                    personServiceImplementation.Save(person);
+                }
+                String string = cosPersonWorkoutServiceImplementation.deleteById(cosPersonWorkout.getId());
+                if (string.equals("Workout deleted succesfully")) {
+                    return ResponseEntity.ok(string);
+                } else {
+                    return ResponseEntity.badRequest().body(string);
+                }
+            }
+        }
+        return ResponseEntity.ok("Error");
     }
 
     @GetMapping("/findAllBreakfasts")
@@ -482,18 +591,143 @@ public class PersonController {
     }
 
     @PostMapping("/DeleteAlimentation")
-    public ResponseEntity<String > deleteAlimentation(@RequestBody DeleteAlimentationRequest deleteAlimentationRequest) {
-        breakfastServiceImplementation.Delete(breakfastServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getBreakfastId()));
-        dinnerServiceImplementation.Delete(dinnerServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getDinnerId()));
-        lunchServiceImplementation.Delete(lunchServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getLunchId()));
-        snackServiceImplementation.Delete(snackServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getSnackId()));
-        System.out.println(deleteAlimentationRequest.getCosPersonMasa().getId() + " " + deleteAlimentationRequest.getPerson().getId());
-        String string = cosPersonMasaServiceImplementation.deleteByIdAndPersonId(deleteAlimentationRequest.getCosPersonMasa().getId(), deleteAlimentationRequest.getPerson().getId());
-        if (string.equals("Alimentation deleted succesfully")) {
-            return ResponseEntity.ok(string);
-        } else {
-            return ResponseEntity.badRequest().body(string);
+    public ResponseEntity<String > deleteAlimentation(@RequestBody CosPersonMasa cosPersonMasa) {
+        if(cosPersonMasa.getBreakfastId() == null || cosPersonMasa.getDinnerId() == null || cosPersonMasa.getSnackId() == null || cosPersonMasa.getLunchId() == null || cosPersonMasa.getPersonId() == null || cosPersonMasa.getId() == null)
+            return ResponseEntity.badRequest().body("Completeaza toate fied-urile");
+        Breakfast breakfast =breakfastServiceImplementation.findFirstByName(cosPersonMasa.getBreakfastId());
+        Lunch lunch = lunchServiceImplementation.findFirstByName(cosPersonMasa.getLunchId());
+        Dinner dinner = dinnerServiceImplementation.findFirstByName(cosPersonMasa.getDinnerId());
+        Snack snack = snackServiceImplementation.findFirstByName(cosPersonMasa.getSnackId());
+        Person person = personServiceImplementation.findFirstById(cosPersonMasa.getPersonId());
+        if(breakfast == null || lunch == null || dinner == null || snack == null || person == null) {
+            if (breakfast == null)
+                return ResponseEntity.badRequest().body("Breakfast-ul nu a fost gasit");
+            if (lunch == null)
+                return ResponseEntity.badRequest().body("Lunch-ul nu a fost gasit");
+            if (dinner == null)
+                return ResponseEntity.badRequest().body("Dinner-ul nu a fost gasit");
+            if (snack == null)
+                return ResponseEntity.badRequest().body("Snack-ul nu a fost gasit");
+            if (person == null)
+                return ResponseEntity.badRequest().body("Persoana nu a fost gasita");
         }
+        else {
+
+            breakfast.setDay(null);
+            List<CosPersonMasa> cosuri = breakfast.getCosuri();
+            CosPersonMasa deletedCos = null;
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Breakfast nu are cosuri");
+            }
+            else
+            {
+                for(CosPersonMasa cos: cosuri) {
+                    if (cos.getId().equals(cosPersonMasa.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if(deletedCos != null)
+                    cosuri.remove(deletedCos);
+                breakfast.setCosuri(cosuri);
+                breakfastServiceImplementation.Save(breakfast);
+            }
+
+            lunch.setDay(null);
+            cosuri = lunch.getCosuri();
+            deletedCos = null;
+
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Lunch-ul nu are cosuri");
+            }
+            else
+            {
+                for(CosPersonMasa cos: cosuri) {
+                    if (cos.getId().equals(cosPersonMasa.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if(deletedCos != null)
+                    cosuri.remove(deletedCos);
+                lunch.setCosuri(cosuri);
+                lunchServiceImplementation.Save(lunch);
+            }
+
+            dinner.setDay(null);
+            cosuri = dinner.getCosuri();
+            deletedCos = null;
+
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Dinner-ul nu are cosuri");
+            }
+            else
+            {
+                for(CosPersonMasa cos: cosuri) {
+                    if (cos.getId().equals(cosPersonMasa.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if(deletedCos != null)
+                    cosuri.remove(deletedCos);
+                dinner.setCosuri(cosuri);
+                dinnerServiceImplementation.Save(dinner);
+            }
+
+            snack.setDay(null);
+            cosuri = snack.getCosuri();
+            deletedCos = null;
+
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Snack-ul nu are cosuri");
+            }
+            else
+            {
+                for(CosPersonMasa cos: cosuri) {
+                    if (cos.getId().equals(cosPersonMasa.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if(deletedCos != null)
+                    cosuri.remove(deletedCos);
+                snack.setCosuri(cosuri);
+                snackServiceImplementation.Save(snack);
+            }
+
+
+            cosuri = person.getCosuri();
+            deletedCos = null;
+            if(cosuri == null)
+            {
+                return ResponseEntity.badRequest().body("Persoana nu are cosuri");
+            }
+            else {
+                for (CosPersonMasa cos : cosuri) {
+                    if (cos.getId().equals(cosPersonMasa.getId())) {
+                        deletedCos = cos;
+                    }
+                }
+                if (deletedCos != null)
+                    cosuri.remove(deletedCos);
+                person.setCosuri(cosuri);
+                personServiceImplementation.Save(person);
+            }
+                //breakfastServiceImplementation.Delete(breakfastServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getBreakfastId()));
+                //dinnerServiceImplementation.Delete(dinnerServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getDinnerId()));
+                //lunchServiceImplementation.Delete(lunchServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getLunchId()));
+                //snackServiceImplementation.Delete(snackServiceImplementation.findFirstByName(deleteAlimentationRequest.getCosPersonMasa().getSnackId()));
+                //System.out.println(deleteAlimentationRequest.getCosPersonMasa().getId() + " " + deleteAlimentationRequest.getPerson().getId());
+            String string = cosPersonMasaServiceImplementation.deleteById(cosPersonMasa.getId());
+            if (string.equals("Alimentation deleted succesfully")) {
+                return ResponseEntity.ok(string);
+            } else {
+                return ResponseEntity.badRequest().body(string);
+            }
+
+        }
+        return ResponseEntity.ok("Error");
     }
 
 }

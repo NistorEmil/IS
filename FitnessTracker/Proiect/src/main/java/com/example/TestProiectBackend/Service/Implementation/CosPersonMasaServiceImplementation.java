@@ -145,5 +145,24 @@ public class CosPersonMasaServiceImplementation implements CosPersonMasaService 
             return ("Alimentation deleted succesfully");
         }
     }
+
+    @Override
+    public String deleteById(Integer id)
+    {
+        if(id == null) {
+            return ("Deleted failed");
+        }
+        else{
+            CosPersonMasa cosPersonMasa = cosRepository.findFirstById(id);
+            if (cosPersonMasa != null) {
+                cosRepository.deleteById(id);
+                return ("Alimentation deleted succesfully");
+            }
+            else
+            {
+                return ("Alimentatia nu exista");
+            }
+        }
+    }
 }
 

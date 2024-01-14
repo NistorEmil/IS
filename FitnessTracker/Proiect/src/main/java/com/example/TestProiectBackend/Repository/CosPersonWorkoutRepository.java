@@ -9,6 +9,8 @@ public interface CosPersonWorkoutRepository extends CrudRepository<CosPersonWork
 
     Iterable<CosPersonWorkout> findAllByPersonId(Integer id);
 
+    void deleteById(Integer id);
+
     // in repouri pun doar cele care nu sunt default
     // save, update(aceeasi chestie cu update), delete, find all sunt default
 }

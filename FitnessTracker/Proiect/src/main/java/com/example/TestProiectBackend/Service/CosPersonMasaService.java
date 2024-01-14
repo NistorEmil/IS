@@ -21,5 +21,6 @@ public interface CosPersonMasaService {
     String deleteBySnackIdAndPersonId(String snackId, Integer personId);
     String deleteByLunchIdAndPersonId(String lunchId, Integer personId);
     String deleteByIdAndPersonId(Integer id, Integer personId);
+    String deleteById(Integer id);
 
 }

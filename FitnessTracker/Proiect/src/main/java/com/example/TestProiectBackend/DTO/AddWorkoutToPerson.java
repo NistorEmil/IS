@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @ToString
 public class AddWorkoutToPerson {
-    private Person person;
+    private Integer personId;
     private Workout workout;
     private String day;
 }

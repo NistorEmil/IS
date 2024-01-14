@@ -1,5 +1,6 @@
 package com.example.TestProiectBackend.Repository;
 import com.example.TestProiectBackend.Model.CosPersonMasa;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,7 @@ public interface CosPersonMasaRepository extends CrudRepository<CosPersonMasa, I
     void deleteBySnackIdAndPersonId(String snackId, Integer personId);
     void deleteByLunchIdAndPersonId(String lunchId, Integer personId);
     void deleteByIdAndPersonId(Integer id, Integer personId);
+    void deleteById(Integer id);
 
     // in repouri pun doar cele care nu sunt default
     // save, update(aceeasi chestie cu update), delete, find all sunt default

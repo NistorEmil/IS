@@ -14,5 +14,6 @@ public interface CosPersonWorkoutService {
     public List<CosPersonWorkout> getAllCosuri();
 
     public List<Workout> getAllWorkoutsByPersonId(Integer id);
+    String deleteById(Integer id);
 
 }
